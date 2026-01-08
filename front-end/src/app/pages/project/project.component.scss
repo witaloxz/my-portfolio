@@ -142,3 +142,15 @@
   box-shadow: 0 0 22px rgba(52, 152, 219, 0.5);
   transform: translateX(3px);
 }
+
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .project-card {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
