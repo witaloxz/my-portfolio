@@ -1,3 +1,20 @@
+:root {
+  --bg-main: #0b0f14;
+  --bg-card: rgba(255, 255, 255, 0.04);
+
+  --primary: #3498db;
+  --primary-soft: rgba(52, 152, 219, 0.08);
+
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.85);
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --transition-fast: 0.25s ease;
+  --transition-normal: 0.3s ease;
+}
 
 * {
   font-family: 'Poppins', sans-serif;
