@@ -1,0 +1,16 @@
+<button class="btn" (click)="toggleMenu()">
+  <i
+    class="fa-solid"
+    [ngClass]="openMenu ? 'fa-xmark' : 'fa-bars'">
+  </i>
+</button>
+
+<nav class="nav_menu" [class.open]="openMenu">
+  <ul class="nav_list">
+    <li><a routerLink="/" (click)="toggleMenu()">Home</a></li>
+    <li><a routerLink="/sobre" (click)="toggleMenu()">Sobre</a></li>
+    <li><a routerLink="/projetos" (click)="toggleMenu()">Projetos</a></li>
+    <li><a routerLink="/contato" (click)="toggleMenu()">Contato</a></li>
+  </ul>
+</nav>
+
