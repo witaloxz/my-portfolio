@@ -33,17 +33,45 @@
         </div>
       </div>
 
-    
-      <form class="contact-form">
-        <input type="text" placeholder="Seu nome" required />
-        <input type="email" placeholder="Seu email" required />
-        <textarea placeholder="Sua mensagem" rows="5" required></textarea>
 
-        <button type="submit">
-          <i class="fa-solid fa-paper-plane"></i>
-          Enviar mensagem
-        </button>
-      </form>
+
+      <form class="contact-form" #contactForm="ngForm" (ngSubmit)="sendEmail(contactForm)">
+    <input
+    type="text"
+    name="name"
+    [(ngModel)]="form.name"
+    required
+    #name="ngModel"
+    placeholder="Seu nome"
+  />
+
+  <input
+    type="email"
+    name="email"
+    [(ngModel)]="form.email"
+    required
+    email
+    #email="ngModel"
+    placeholder="Seu email"
+  />
+
+  <textarea
+    name="message"
+    [(ngModel)]="form.message"
+    required
+    minlength="10"
+    #message="ngModel"
+    placeholder="Sua mensagem"
+    rows="5"
+  ></textarea>
+
+  <button type="submit" [disabled]="loading">
+    <i *ngIf="!loading" class="fa-solid fa-paper-plane"></i>
+    <i *ngIf="loading" class="fa-solid fa-spinner fa-spin"></i>
+    {{ loading ? 'Enviando...' : 'Enviar mensagem' }}
+  </button>
+</form>
+
 
     </div>
 
