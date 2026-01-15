@@ -1,4 +1,9 @@
-.contact-section {
+main {
+  background: var(--bg-main);
+  min-height: 100dvh;
+}
+
+.contact-section{
   padding: 100px 20px;
   background: var(--bg-main);
   color: var(--text-main);
