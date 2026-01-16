@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -26,4 +26,12 @@ export class HeaderComponent {
       document.body.style.touchAction = '';
     }
   }
+
+  @HostListener('document:keydown.escape')
+  handleEscape() {
+    if (this.openMenu) {
+      this.toggleMenu();
+    }
+  }
+
 }

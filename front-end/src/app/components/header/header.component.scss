@@ -85,3 +85,7 @@
   transform: scale(1.15);
 }
 
+.nav_list a.active {
+  color: var(--primary);
+  text-underline-offset: 6px;
+}

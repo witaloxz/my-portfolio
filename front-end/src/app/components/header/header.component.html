@@ -1,16 +1,16 @@
-<button class="btn" (click)="toggleMenu()">
+<button class="btn" aria-label="Abrir menu" (click)="toggleMenu()" [attr.aria-expanded]="openMenu">
   <i
     class="fa-solid"
     [ngClass]="openMenu ? 'fa-xmark' : 'fa-bars'">
   </i>
 </button>
 
-<nav class="nav_menu" [class.open]="openMenu">
+<nav class="nav_menu" [class.open]="openMenu" role="navigation">
   <ul class="nav_list">
-    <li><a routerLink="/" (click)="toggleMenu()">Home</a></li>
-    <li><a routerLink="/sobre" (click)="toggleMenu()">Sobre</a></li>
-    <li><a routerLink="/projetos" (click)="toggleMenu()">Projetos</a></li>
-    <li><a routerLink="/contato" (click)="toggleMenu()">Contato</a></li>
+    <li><a [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" routerLink="/" (click)="toggleMenu()">Home</a></li>
+    <li><a routerLinkActive="active" routerLink="/sobre" (click)="toggleMenu()">Sobre</a></li>
+    <li><a routerLinkActive="active" routerLink="/projetos" (click)="toggleMenu()">Projetos</a></li>
+    <li><a routerLinkActive="active" routerLink="/contato" (click)="toggleMenu()">Contato</a></li>
   </ul>
 </nav>
 
