@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         console.error('❌ particlesJS não encontrado!');
       }
-    }, 1000);
+    }, 500);
   }
 
   ngOnInit() {
