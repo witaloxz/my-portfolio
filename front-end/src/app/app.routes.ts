@@ -4,25 +4,10 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/home/home.component')
-        .then(m => m.HomeComponent)
+      import('./pages/landing/landing.component').then(m => m.LandingComponent),
   },
   {
-    path: 'sobre',
-    loadComponent: () =>
-      import('./pages/about/about.component')
-        .then(m => m.AboutComponent)
+    path: '**',
+    redirectTo: '',
   },
-  {
-    path: 'projetos',
-    loadComponent: () =>
-      import('./pages/project/project.component')
-        .then(m => m.ProjectComponent)
-  },
-  {
-    path: 'contato',
-    loadComponent: () =>
-      import('./pages/contact/contact.component')
-        .then(m => m.ContactComponent)
-  }
 ];

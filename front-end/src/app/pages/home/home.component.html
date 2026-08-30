@@ -1,24 +1,13 @@
-<div id="particles-js" class="particles-container"></div>
+@let t = i18n.t();
 
-<div class="content-main">
-  <h1>Witalo Dias</h1>
-  <h2>Desenvolvedor <span>{{ textoDigitado }}</span></h2>
-</div>
+<section class="hero" id="home">
+  <div class="hero-card card">
+    <h1 class="hero-name">{{ t.home.name }}</h1>
 
-<footer class="content-footer">
-  <div class="content-icons">
-    <a href="mailto:witalodias1@gmail.com" aria-label="E-mail">
-      <i class="fa-solid fa-envelope"></i>
-    </a>
+    <p class="hero-tagline">{{ t.home.tagline }}</p>
 
-    <a href="https://www.linkedin.com/in/witalo-dias-775a59289/" target="_blank" aria-label="LinkedIn">
-      <i class="fa-brands fa-linkedin-in"></i>
-    </a>
-
-    <a href="https://github.com/witaloxz" target="_blank" aria-label="GitHub">
-      <i class="fa-brands fa-github"></i>
-    </a>
+    <p class="hero-roles" [attr.aria-label]="t.home.roles[0]">
+      <span>{{ typed }}</span><span class="hero-caret" aria-hidden="true"></span>
+    </p>
   </div>
-
-  <p>© 2026 Witalo Dias — Todos os direitos reservados.</p>
-</footer>
+</section>

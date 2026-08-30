@@ -1,0 +1,33 @@
+@let t = i18n.t();
+
+<section class="page page--wide" id="skills">
+  <h1 class="page-title" appReveal>{{ t.skills.title }}</h1>
+  <p class="page-lead" [appReveal]="80">{{ t.skills.subtitle }}</p>
+
+  <div class="skill-groups">
+    @for (group of t.skills.groups; track group.title) {
+      <div class="skill-group card" [appReveal]="$index * 50">
+        <h2 class="skill-group-title">{{ group.title }}</h2>
+        <ul class="skill-items">
+          @for (item of group.items; track item) {
+            @let info = techInfo(item);
+            <li class="skill-item">
+              @if (info.icon) {
+                <img
+                  class="skill-icon"
+                  [src]="info.icon"
+                  [alt]="info.label"
+                  width="16"
+                  height="16"
+                  loading="lazy"
+                  (error)="onIconError($event)"
+                >
+              }
+              <span>{{ info.label }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</section>

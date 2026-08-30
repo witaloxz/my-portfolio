@@ -1,16 +1,51 @@
-<button class="btn" aria-label="Abrir menu" (click)="toggleMenu()" [attr.aria-expanded]="openMenu">
-  <i
-    class="fa-solid"
-    [ngClass]="openMenu ? 'fa-xmark' : 'fa-bars'">
-  </i>
-</button>
+@let t = i18n.t();
+@let active = spy.active();
 
-<nav class="nav_menu" [class.open]="openMenu" role="navigation">
-  <ul class="nav_list">
-    <li><a [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" routerLink="/" (click)="toggleMenu()">Home</a></li>
-    <li><a routerLinkActive="active" routerLink="/sobre" (click)="toggleMenu()">Sobre</a></li>
-    <li><a routerLinkActive="active" routerLink="/projetos" (click)="toggleMenu()">Projetos</a></li>
-    <li><a routerLinkActive="active" routerLink="/contato" (click)="toggleMenu()">Contato</a></li>
-  </ul>
-</nav>
+<header class="site-header">
+  <a href="#home" class="wordmark" (click)="closeMenu()" aria-label="Witalo Dias — home">
+    Witalo <span>Dias</span>
+  </a>
 
+  <nav
+    id="site-nav"
+    class="site-nav"
+    [class.is-open]="menuOpen()"
+    [attr.aria-label]="t.nav.home"
+    (click)="closeMenu()"
+  >
+    <a href="#home" [class.is-active]="active === 'home'">
+      <span>{{ t.nav.home }}</span>
+    </a>
+    <a href="#about" [class.is-active]="active === 'about'">
+      <span>{{ t.nav.about }}</span>
+    </a>
+    <a href="#projects" [class.is-active]="active === 'projects'">
+      <span>{{ t.nav.projects }}</span>
+    </a>
+    <a href="#skills" [class.is-active]="active === 'skills'">
+      <span>{{ t.nav.skills }}</span>
+    </a>
+    <a href="#contact" [class.is-active]="active === 'contact'">
+      <span>{{ t.nav.contact }}</span>
+    </a>
+  </nav>
+
+  <div class="header-controls">
+    <app-theme-toggle />
+
+    <app-lang-toggle />
+
+    <button
+      type="button"
+      class="menu-btn"
+      [class.is-open]="menuOpen()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="site-nav"
+      aria-label="Menu"
+      (click)="toggleMenu()"
+    >
+      <span class="menu-btn-bar"></span>
+      <span class="menu-btn-bar"></span>
+    </button>
+  </div>
+</header>

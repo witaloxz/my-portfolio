@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { Component, inject } from '@angular/core';
+import { I18nService } from '../../core/i18n.service';
+import { RevealDirective } from '../../core/reveal.directive';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [FooterComponent],
+  imports: [RevealDirective],
   templateUrl: './about.component.html',
-  styleUrl: './about.component.scss'
+  styleUrl: './about.component.scss',
 })
 export class AboutComponent {
-
+  readonly i18n = inject(I18nService);
 }

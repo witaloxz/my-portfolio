@@ -1,37 +1,33 @@
-import { Component, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Component, HostListener, inject, signal } from '@angular/core';
+import { I18nService } from '../../core/i18n.service';
+import { SectionSpyService } from '../../core/section-spy.service';
+import { LangToggleComponent } from '../lang-toggle/lang-toggle.component';
+import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+  standalone: true,
+  imports: [LangToggleComponent, ThemeToggleComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  readonly i18n = inject(I18nService);
+  readonly spy = inject(SectionSpyService);
 
-  openMenu: boolean = false;
+  /** Mobile navigation panel state. Ignored on desktop (CSS forces it open). */
+  readonly menuOpen = signal(false);
 
-  toggleMenu() {
-    this.openMenu = !this.openMenu;
+  toggleMenu(): void {
+    this.menuOpen.update(open => !open);
+  }
 
-     if (this.openMenu) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none'; 
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    }
+  closeMenu(): void {
+    this.menuOpen.set(false);
   }
 
   @HostListener('document:keydown.escape')
-  handleEscape() {
-    if (this.openMenu) {
-      this.toggleMenu();
-    }
+  onEscape(): void {
+    this.closeMenu();
   }
-
 }

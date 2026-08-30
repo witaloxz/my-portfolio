@@ -1,74 +1,76 @@
-import { Component } from '@angular/core';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { FormsModule, Validators } from '@angular/forms';
-import { NgForm } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import emailjs from '@emailjs/browser';
-import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
+import { I18nService } from '../../core/i18n.service';
+import { RevealDirective } from '../../core/reveal.directive';
+import { CV_FILE } from '../../core/translations';
+
+// EmailJS — public keys are meant to be exposed client-side and are
+// domain-restricted in the EmailJS dashboard. Swap these for your own.
+const EMAILJS = {
+  serviceId: 'service_cddfzp5',
+  templateId: 'template_p07z8so',
+  publicKey: 'r8MohbNf8FxtAi9ZV',
+};
+
+type SendStatus = 'idle' | 'sending' | 'sent' | 'error';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [
-    FormsModule,
-    FooterComponent,
-    CommonModule 
-  ],
+  imports: [ReactiveFormsModule, RevealDirective],
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.scss'
+  styleUrl: './contact.component.scss',
 })
 export class ContactComponent {
+  readonly i18n = inject(I18nService);
+  readonly cvFile = CV_FILE;
 
-  loading = false;
+  private readonly fb = inject(FormBuilder);
 
-  form = {
-    name: '',
-    email: '',
-    message: '',
-  };
+  readonly form = this.fb.nonNullable.group({
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    email: ['', [Validators.required, Validators.email]],
+    message: ['', [Validators.required, Validators.minLength(10)]],
+  });
 
-  constructor(private toastr: ToastrService) {}
+  readonly status = signal<SendStatus>('idle');
 
-  sendEmail(formRef: NgForm) {
-  if (formRef.invalid) {
-    this.toastr.warning(
-      'Preencha todos os campos corretamente.',
-      'Formulário inválido ⚠️'
-    );
-    return;
+  /** Error key for a control, or null when it's valid / untouched. */
+  errorKey(name: 'name' | 'email' | 'message'): 'required' | 'email' | 'short' | null {
+    const control = this.form.controls[name];
+    if (!control.touched || control.valid) {
+      return null;
+    }
+    if (control.errors?.['required']) return 'required';
+    if (control.errors?.['email']) return 'email';
+    return 'short';
   }
 
-  if (this.loading) return;
+  async submit(): Promise<void> {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-  this.loading = true;
+    this.status.set('sending');
+    const { name, email, message } = this.form.getRawValue();
 
-  emailjs
-    .send(
-      'service_cddfzp5',
-      'template_p07z8so',
-      {
-        name: this.form.name,
-        email: this.form.email,
-        message: this.form.message,
-        time: new Date().toLocaleString(),
-      },
-      'r8MohbNf8FxtAi9ZV'
-    )
-    .then(() => {
-      this.toastr.success(
-        'Mensagem enviada com sucesso!',
-        'Tudo certo ✅'
+    try {
+      await emailjs.send(
+        EMAILJS.serviceId,
+        EMAILJS.templateId,
+        { name, email, message, time: new Date().toLocaleString() },
+        { publicKey: EMAILJS.publicKey },
       );
-
-      formRef.resetForm();
-      this.loading = false;
-    })
-    .catch(() => {
-      this.toastr.error(
-        'Erro ao enviar mensagem. Tente novamente.',
-        'Ops... ❌'
-      );
-      this.loading = false;
-    });
-}
+      this.status.set('sent');
+      this.form.reset();
+    } catch {
+      this.status.set('error');
+    }
+  }
 }

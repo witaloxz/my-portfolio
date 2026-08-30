@@ -1,165 +1,59 @@
-<section class="projects-section">
-  <div class="projects-container">
+@let t = i18n.t();
 
-    <h1 class="projects-title">Meus Projetos</h1>
-    <p class="projects-subtitle">
-      Alguns projetos que desenvolvi utilizando tecnologias modernas.
-    </p>
+<section class="page page--wide" id="projects">
+  <h1 class="page-title" appReveal>{{ t.projects.title }}</h1>
+  <p class="page-lead" [appReveal]="80">{{ t.projects.subtitle }}</p>
 
-    <div class="projects-grid">
-
-      
-      <article class="project-card">
-
-        <div class="project-image">
-          <img src="imgs/projects/moveIt.png" alt="Projeto">
+  <ol class="project-list">
+    @for (project of t.projects.items; track project.name) {
+      <li class="project card" [appReveal]="$index * 45" appTilt>
+        <div class="project-head">
+          <h2 class="project-name">{{ project.name }}</h2>
+          <span class="project-year">{{ project.year }}</span>
         </div>
 
-        <div class="project-content">
-          <h2 class="project-title">MoveIt</h2>
+        <p class="project-desc">{{ project.description }}</p>
 
-          <p class="project-description">
-            Sistema de login completo com frontend simples e backend em Spring Boot. Prática de conceitos full-stack.
-          </p>
+        <div class="project-footer">
+          <ul class="project-techs">
+            @for (tech of project.techs; track tech) {
+              @let info = techInfo(tech);
+              <li class="project-tech">
+                @if (info.icon) {
+                  <img
+                    class="tech-icon"
+                    [src]="info.icon"
+                    [alt]="info.label"
+                    width="16"
+                    height="16"
+                    loading="lazy"
+                    (error)="onIconError($event)"
+                  >
+                }
+                <span>{{ info.label }}</span>
+              </li>
+            }
+          </ul>
 
-          <div class="project-techs">
-
-            <span> <img src="imgs/tech-icons/html.svg" alt="HTML">HTML</span>
-            <span> <img src="imgs/tech-icons/css.svg" alt="CSS">CSS</span>
-            <span> <img src="imgs/tech-icons/typescript.svg" alt="TypeScript">TypeScript</span>
-            <span> <img src="imgs/tech-icons/angular.svg" alt="Angular">Angular</span>
-            <span> <img src="imgs/tech-icons/spring.svg" alt="SpringBoot">SpringBoot</span>
-          </div>
-
-          <div class="project-actions">
-            <a href="#" class="project-link">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Demo
-            </a>
-
-            <a target="_blank" href="https://github.com/witaloxz/moveIt" class="project-link">
-              <i class="fa-brands fa-github"></i> Código
-            </a>
-
-            <a href="#" class="project-btn">
-              Detalhes <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
+          @if (project.url || project.repo) {
+            <div class="project-links">
+              @if (project.url) {
+                <a class="project-link" [href]="project.url" target="_blank" rel="noopener">
+                  {{ t.projects.demo }}
+                </a>
+              }
+              @if (project.repo) {
+                <a class="project-link" [href]="project.repo" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                  </svg>
+                  {{ t.projects.code }}
+                </a>
+              }
+            </div>
+          }
         </div>
-
-      </article>
-
-      <article class="project-card">
-
-        <div class="project-image">
-          <img src="imgs/gravata.png" alt="Projeto">
-        </div>
-
-        <div class="project-content">
-          <h2 class="project-title">Nome do Projeto</h2>
-
-          <p class="project-description">
-            Aplicação moderna focada em performance, design e boas práticas.
-          </p>
-
-          <div class="project-techs">
-            <span>Angular</span>
-            <span>TypeScript</span>
-            <span>Node.js</span>
-            <span>API</span>
-          </div>
-
-          <div class="project-actions">
-            <a href="#" class="project-link">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Demo
-            </a>
-
-            <a href="#" class="project-link">
-              <i class="fa-brands fa-github"></i> Código
-            </a>
-
-            <a href="#" class="project-btn">
-              Detalhes <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-
-      </article>
-
-      <article class="project-card">
-
-        <div class="project-image">
-          <img src="imgs/gravata.png" alt="Projeto">
-        </div>
-
-        <div class="project-content">
-          <h2 class="project-title">Nome do Projeto</h2>
-
-          <p class="project-description">
-            Aplicação moderna focada em performance, design e boas práticas.
-          </p>
-
-          <div class="project-techs">
-            <span>Angular</span>
-            <span>TypeScript</span>
-            <span>Node.js</span>
-            <span>API</span>
-          </div>
-
-          <div class="project-actions">
-            <a href="#" class="project-link">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Demo
-            </a>
-
-            <a href="#" class="project-link">
-              <i class="fa-brands fa-github"></i> Código
-            </a>
-
-            <a href="#" class="project-btn">
-              Detalhes <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-
-      </article>
-
-      <article class="project-card">
-
-        <div class="project-image">
-          <img src="imgs/gravata.png" alt="Projeto">
-        </div>
-
-        <div class="project-content">
-          <h2 class="project-title">Nome do Projeto</h2>
-
-          <p class="project-description">
-            Aplicação moderna focada em performance, design e boas práticas.
-          </p>
-
-          <div class="project-techs">
-            <span>Angular</span>
-            <span>TypeScript</span>
-            <span>Node.js</span>
-            <span>API</span>
-          </div>
-
-          <div class="project-actions">
-            <a href="#" class="project-link">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Demo
-            </a>
-
-            <a href="#" class="project-link">
-              <i class="fa-brands fa-github"></i> Código
-            </a>
-
-            <a href="#" class="project-btn">
-              Detalhes <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-
-      </article>
-
-    </div>
-  </div>
+      </li>
+    }
+  </ol>
 </section>
-<app-footer></app-footer>

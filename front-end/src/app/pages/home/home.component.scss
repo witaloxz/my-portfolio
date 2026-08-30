@@ -1,111 +1,61 @@
-:host {
-  height: 100dvh;
+.hero {
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.particles-container {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-color: var(--bg-main);
-}
-
-.content-main {
-  z-index: 1;
-  flex: 1 1 auto;
-  min-height: 0;
-
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
 
-  text-align: center;
-  color: var(--text-main);
+  min-height: calc(100svh - 9rem);
+  padding: var(--space-5) var(--gutter);
 }
 
-.content-main h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  margin: 0;
+/* left edge lines up with the header wordmark (shared --gutter);
+   visual style comes from the shared .card class */
+.hero-card {
+  width: 100%;
+  padding: clamp(var(--space-3), 4vw, var(--space-5));
 }
 
-.content-main h2 {
-  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
-  margin: 0;
+.hero-name {
+  font-size: clamp(2.5rem, 9vw, 4.5rem);
+  margin: 0 0 var(--space-3);
 }
 
-.content-main span {
-  color: var(--primary);
-  position: relative;
+.hero-tagline {
+  max-width: 40rem;
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  color: var(--fg-muted);
 }
 
-.content-main span::after {
-  content: '|';
-  margin-left: 4px;
-  animation: blink 1s infinite;
+/* rotating job titles, typed out at the bottom of the card */
+.hero-roles {
+  display: flex;
+  align-items: center;
+  min-height: 1.4em;
+
+  margin-top: var(--space-4);
+
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
-@keyframes blink {
+.hero-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 5px;
+  background: var(--accent);
+  animation: hero-caret-blink 1s step-end infinite;
+}
+
+@keyframes hero-caret-blink {
   50% {
     opacity: 0;
   }
 }
 
-.content-footer {
-  padding: 0 20px 20px;
-  z-index: 1;
-  
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.content-icons {
-  display: flex;
-  gap: 32px;
-}
-
-.content-icons a {
-  text-decoration: none;
-  font-size: 42px;
-  color: var(--text-main);
-
-  width: 44px;
-  height: 44px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: transform var(--transition-fast),
-              color var(--transition-fast);
-}
-
-.content-icons a:hover {
-  transform: scale(1.15);
-  color: var(--primary);
-}
-
-.content-footer p {
-  font-size: 0.85rem;
-  opacity: 0.7;
-  text-align: center;
-}
-
 @media (max-width: 600px) {
-  
-  .content-icons {
-    gap: 24px;
-  }
-
-  .content-icons a {
-    font-size: 36px;
-  }
-
-  .content-footer {
-    gap: 12px;
+  .hero {
+    min-height: 0;
+    padding: var(--space-5) var(--gutter);
   }
 }

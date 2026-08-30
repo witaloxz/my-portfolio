@@ -1,92 +1,67 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-
-declare global {
-  interface Window {
-    particlesJS: any;
-  }
-}
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { I18nService } from '../../core/i18n.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HomeComponent implements OnInit, OnDestroy {
+  readonly i18n = inject(I18nService);
 
-  textos = ['Full-Stack', 'Java', 'Spring Boot', 'Angular', 'APIs RESTful', 'Microserviços' ];
-  textoDigitado = '';
+  typed = '';
 
-  private textoIndex = 0;
+  private wordIndex = 0;
   private charIndex = 0;
-  private apagando = false;
-  private intervalId: any;
+  private deleting = false;
+  private timer: ReturnType<typeof setTimeout> | undefined;
 
-  ngAfterViewInit() {
-    
-    setTimeout(() => {
-      if (window.particlesJS) { 
-        window.particlesJS('particles-js', {
-          particles: {
-            number: { value: 60 },
-            color: { value: "#3498db" },
-            shape: { type: "circle" },
-            opacity: { value: 0.5 },
-            size: { value: 3 },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: "#3498db",
-              opacity: 0.4,
-              width: 1
-            },
-            move: { enable: true, speed: 2 }
-          },
-          interactivity: {
-            events: {
-              onhover: { enable: true, mode: "repulse" },
-              onclick: { enable: true, mode: "push" }
-            }
-          }
-        });
-        console.log('✅ Partículas carregadas!');
-      } else {
-        console.error('❌ particlesJS não encontrado!');
+  private readonly reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches;
+
+  private get roles(): string[] {
+    return this.i18n.t().home.roles;
+  }
+
+  ngOnInit(): void {
+    if (this.reduceMotion) {
+      this.typed = this.roles[0];
+      return;
+    }
+    this.tick();
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.timer);
+  }
+
+  private tick(): void {
+    const roles = this.roles;
+    const word = roles[this.wordIndex % roles.length];
+
+    if (!this.deleting) {
+      this.typed = word.slice(0, this.charIndex + 1);
+      this.charIndex++;
+
+      if (this.charIndex >= word.length) {
+        this.deleting = true;
+        this.timer = setTimeout(() => this.tick(), 1600);
+        return;
       }
-    }, 500);
-  }
+    } else {
+      this.typed = word.slice(0, this.charIndex - 1);
+      this.charIndex--;
 
-  ngOnInit() {
-    this.iniciarAnimacao();
-  }
-
-  ngOnDestroy() {
-    clearInterval(this.intervalId);
-  }
-
-  iniciarAnimacao() {
-    this.intervalId = setInterval(() => {
-
-      const textoAtual = this.textos[this.textoIndex];
-
-      if (!this.apagando) {
-        this.textoDigitado = textoAtual.slice(0, this.charIndex + 1);
-        this.charIndex++;
-
-        if (this.charIndex === textoAtual.length) {
-          setTimeout(() => this.apagando = true, 1200);
-        }
-
-      } else {
-        this.textoDigitado = textoAtual.slice(0, this.charIndex - 1);
-        this.charIndex--;
-
-        if (this.charIndex === 0) {
-          this.apagando = false;
-          this.textoIndex = (this.textoIndex + 1) % this.textos.length;
-        }
+      if (this.charIndex <= 0) {
+        this.charIndex = 0;
+        this.deleting = false;
+        this.wordIndex = (this.wordIndex + 1) % roles.length;
       }
+    }
 
-    }, this.apagando ? 30 : 100);
+    this.timer = setTimeout(() => this.tick(), this.deleting ? 40 : 95);
   }
 }
